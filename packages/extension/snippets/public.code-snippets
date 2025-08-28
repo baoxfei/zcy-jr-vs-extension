@@ -1,0 +1,157 @@
+{
+  "Print to console": {
+    "scope": "javascript,typescript,typescriptreact",
+  	"prefix": "log",
+  	"body": [
+      "// eslint-disable-next-line no-console",
+      "console.log('$1 :', $1);",
+  	],
+  	"description": "Log output to console"
+  },
+  "ZcyList模版": {
+    "scope": "javascript,typescript,typescriptreact",
+    "prefix": "ZcyList",
+    "body": [
+      "const customItem = getCustomItem();",
+      "const table = getTableConfig(state);",
+      "<ZcyList",
+      "  expandForm",
+      "  customItem={customItem}",
+      "  table={table}",
+      "  onSearch={onSearch}",
+      "/>"
+    ],
+    "description": "ZcyList"
+  },
+  "ZcyBreadcrumb模版": {
+    "prefix": "ZcyBreadcrumb",
+    "body": [
+      " <ZcyBreadcrumb",
+      "    routes={}",
+      "    globalBtn={[",
+      "      {",
+      "        label: '返回',",
+      "        onClick() {",
+      "          props.history.go(-1);",
+      "        },",
+      "      }",
+      "    ]}",
+      "  />"
+    ],
+    "description": "ZcyBreadcrumb模版"
+  },
+  "export default 模板": {
+    "scope": "javascript,typescript,typescriptreact",
+    "prefix": "export",
+    "body": ["export default "],
+    "description": "export"
+  },
+  "import React 模板": {
+    "scope": "javascript,typescript,typescriptreact",
+    "prefix": "import react",
+    "body": [
+      "import React from 'react';",
+      "import { Spin, ZcyBreadcrumb, ZcyList } from 'doraemon';",
+      "import { useSetState } from 'ahooks';",
+      "const List = () => {",
+      "  // TODO",
+      "  const [state, setState] = useSetState({});",
+      "",
+      "  // TODO",
+      "  const onSearch = () => {};",
+      "",
+      "  const { initSearchParams: stateInitSearchParams } = state.searchParams || {};",
+      "  const breadcrumbConfig = getBreadConfig();",
+      "  const customItem = []",
+      "  const tabs = []",
+      "  table={{",
+      "    columns: accountConfig.columns.concat(columnsOperations),",
+      "    dataSource: accountPermissions?.data,",
+      "    pagination: {",
+      "     pageSize: 10",
+      "     current: 1",
+      "     showSizeChanger: true,",
+      "     total: 10",
+      "    },",
+      "    rowKey: 'operatorId',",
+      "  }}",
+      "  return (",
+      "    <Spin spinning={state.listLoading}>",
+      "      <ZcyBreadcrumb {...breadcrumbConfig} />",
+      "      <ZcyList",
+      "        tabKey=\"TODO\"",
+      "        expandForm",
+      "        tabs={tabs}",
+      "        table={table}",
+      "        customItem={customItem}",
+      "        onSearch={onSearch}",
+      "        initSearchParams={stateInitSearchParams}",
+      "      />",
+      "    </Spin>",
+      "  );",
+      "};",
+      "",
+      "export default List;",
+      ""
+    ],
+    "description": "import react"
+  },
+  "getValueFromEvent": {
+    "scope": "javascript,typescript,typescriptreact",
+    "prefix": "getValueFromEvent",
+    "body": ["getValueFromEvent: (value) => handleFormChange('$1', value),"],
+    "description": "getValueFromEvent"
+  },
+  "request模版": {
+    "scope": "javascript,typescript,typescriptreact",
+    "prefix": "import request",
+    "body": [
+      "import request from '$1;",
+      "const urls = {",
+      "  list: '/mock/list',",
+      "  detail: '/mock/detail',",
+      "  create: '/mock/success',",
+      "  delete: '/mock/success',",
+      "  revoke: '/mock/success',",
+      "};",
+      "",
+      "export async function fetchList(params) {",
+      "  return request(urls.list, { params });",
+      "}"
+    ],
+    "description": "import request"
+  },
+  "try catch 模板": {
+    "scope": "javascript,typescript,typescriptreact",
+    "prefix": "try catch",
+    "body": [
+      "try {",
+      "  const res = (await $1()) || {};",
+      "  const { success, result } = res || {};",
+      "  if (res && success) {",
+      "    const { $2 } = result || {};",
+      "    setState({ $3 });",
+      "  } else {",
+      "    throw res.message || '$4';",
+      "  }",
+      "} catch (error) {",
+      "  fixError(error);",
+      "}"
+    ],
+    "description": "try catch"
+  },
+  "yapi url": {
+    "scope": "javascript,typescript,typescriptreact",
+    "prefix": "yapi url",
+    "body": [
+      "const urls = {",
+      "  list: '$1,",
+      "  detail: '$2,",
+      "  success: '$3,",
+      "  postSuccess: '$4,",
+      "  failed: '$5,",
+      "};"
+    ],
+    "description": "import request"
+  }
+}

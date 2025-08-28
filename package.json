@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "zcy-jr-vs-extend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "pnpm run --filter 'zcy-jr' watch & pnpm run --filter 'webview-vue' dev",
+    "dev:webview-vue": "pnpm run --filter 'webview-vue' dev"
+  },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

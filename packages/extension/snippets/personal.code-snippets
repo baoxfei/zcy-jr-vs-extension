@@ -1,0 +1,10 @@
+{
+  "exportConst": {
+    "prefix": "expct",
+    "body": [
+      "export const ${1:one} = {${2:second}}",
+      "console.log('test')"
+    ],
+    "description": "exportConst"
+  }
+}

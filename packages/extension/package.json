@@ -1,0 +1,266 @@
+{
+  "name": "zcy-jr",
+  "displayName": "ZcyJr",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.97.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:zcy-jr",
+    "onView:zcy-jr.personalSnippets",
+    "onView:zcy-jr.publicSnippets"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "zcy-jr.openSetting",
+        "title": "设置",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "zcy-jr.showGenerateSnippet",
+        "title": "打开生成代码片段页"
+      },
+      {
+        "command": "zcy-jr.generateSnippet",
+        "title": "生成代码片段View"
+      },
+      {
+        "command": "zcy-jr.closeGenerateSnippet",
+        "title": "关闭代码片段页"
+      },
+      {
+        "command": "zcy-jr.backToWelcome",
+        "title": "返回上一页",
+        "icon": "$(arrow-left)"
+      },
+      {
+        "command": "zcy-jr.refreshPersonalTreeView",
+        "title": "刷新代码片段树视图",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "zcy-jr.exportPersonalSnippet",
+        "title": "导出代码片段",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "zcy-jr.deletePersonalSnippet",
+        "title": "删除代码片段",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "zcy-jr.editPersonalSnippet",
+        "title": "编辑代码片段",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "zcy-jr.importPersonalSnippet",
+        "title": "导入代码片段",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "zcy-jr.searchPersonalSnippet",
+        "title": "搜索代码片段",
+        "icon": "$(search)"
+      },
+      {
+        "command": "zcy-jr.refreshPublicTreeView",
+        "title": "刷新代码片段树视图",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "zcy-jr.searchPublicSnippet",
+        "title": "搜索代码片段",
+        "icon": "$(search)"
+      },
+      {
+        "command": "zcy-jr.deletePublicSnippet",
+        "title": "删除代码片段",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "zcy-jr.uploadPublicSnippet",
+        "title": "同步代码片段",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "zcy-jr.downloadPublicSnippet",
+        "title": "导出代码片段",
+        "icon": "$(cloud-download)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "zcy-jr",
+          "title": "zcy-jr generate",
+          "icon": "images/snippets.svg"
+        }
+      ]
+    },
+    "views": {
+      "zcy-jr": [
+        {
+          "id": "zcy-jr.generateSnippet",
+          "name": "welcome",
+          "when": "!zcy-jr.snippetView"
+        },
+        {
+          "id": "zcy-jr.snippetView",
+          "name": "snippetView",
+          "type": "webview",
+          "when": "zcy-jr.snippetView"
+        },
+        {
+          "id": "zcy-jr.personalSnippets",
+          "name": "personalSnippets",
+          "type": "tree",
+          "when": "!zcy-jr.snippetView"
+        },
+        {
+          "id": "zcy-jr.publicSnippets",
+          "name": "publicSnippets",
+          "type": "tree",
+          "when": "!zcy-jr.snippetView"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "zcy-jr.generateSnippet",
+        "contents": "[设置](command:zcy-jr.openSetting)\n[代码片段生成](command:zcy-jr.showGenerateSnippet)"
+      }
+    ],
+    "configuration": {
+      "title": "ZcyJr",
+      "properties": {
+        "ZcyJr.hostname": {
+          "type": "string",
+          "default": "",
+          "description": "第三方代理地址"
+        },
+        "ZcyJr.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "第三方代理提供的apiKey"
+        },
+        "ZcyJr.model": {
+          "type": "string",
+          "default": "deepSeek",
+          "description": "chatGPT模型（默认：deepSeek）"
+        }
+      }
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "zcy-jr.backToWelcome",
+          "group": "navigation",
+          "when": "view === zcy-jr.snippetView"
+        },
+        {
+          "command": "zcy-jr.refreshPersonalTreeView",
+          "group": "navigation",
+          "when": "view === zcy-jr.personalSnippets"
+        },
+        {
+          "command": "zcy-jr.importPersonalSnippet",
+          "group": "navigation",
+          "when": "view === zcy-jr.personalSnippets"
+        },
+        {
+          "command": "zcy-jr.searchPersonalSnippet",
+          "group": "navigation",
+          "when": "view === zcy-jr.personalSnippets"
+        },
+        {
+          "command": "zcy-jr.refreshPublicTreeView",
+          "group": "navigation",
+          "when": "view === zcy-jr.publicSnippets"
+        },
+        {
+          "command": "zcy-jr.uploadPublicSnippet",
+          "group": "navigation",
+          "when": "view === zcy-jr.publicSnippets"
+        },
+        {
+          "command": "zcy-jr.searchPublicSnippet",
+          "group": "navigation",
+          "when": "view === zcy-jr.publicSnippets"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "zcy-jr.deletePersonalSnippet",
+          "group": "inline",
+          "when": "view === zcy-jr.personalSnippets && viewItem === personalSnippetItem"
+        },
+        {
+          "command": "zcy-jr.editPersonalSnippet",
+          "group": "inline",
+          "when": "view === zcy-jr.personalSnippets && viewItem === personalSnippetItem"
+        },
+        {
+          "command": "zcy-jr.deletePublicSnippet",
+          "group": "inline",
+          "when": "view === zcy-jr.publicSnippets && viewItem === publicSnippetItem"
+        }
+      ]
+    },
+    "snippets": [
+      {
+        "path": "./snippets/personal.code-snippets"
+      },
+      {
+        "path": "./snippets/public.code-snippets"
+      }
+    ]
+  },
+  "scripts": {
+    "watch": "cross-env NODE_ENV=development webpack --watch",
+    "build:webview": "yarn --cwd \"webview-view\"  build",
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "clean:cache": "rm -rf node_modules/.cache && webpack --clear-cache",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/common-tags": "^1.8.4",
+    "@types/ejs": "^3.1.5",
+    "@types/fs-extra": "^11.0.4",
+    "@types/lodash": "^4.17.17",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.97.0",
+    "@typescript-eslint/eslint-plugin": "^8.22.0",
+    "@typescript-eslint/parser": "^8.22.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "copy-webpack-plugin": "^13.0.0",
+    "eslint": "^9.19.0",
+    "htmlparser2": "^10.0.0",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.3",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "@octokit/core": "^6.1.5",
+    "axios": "^1.9.0",
+    "cross-env": "^7.0.3",
+    "ejs": "^3.1.10",
+    "fs-extra": "^11.3.0",
+    "lodash": "^4.17.21"
+  }
+}
