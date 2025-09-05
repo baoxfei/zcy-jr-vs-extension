@@ -6,7 +6,8 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    component: () => import('@/pages/Home/Home.vue'),
+    // component: () => import('@/pages/Home/Home.vue'),
+    component: () => import('@/pages/GenerateSnippet/GenerateSnippet.vue')
   },
   {
     path: '/generateSnippet',

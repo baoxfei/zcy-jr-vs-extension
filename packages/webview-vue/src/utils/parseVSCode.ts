@@ -4,6 +4,7 @@ const parseVSCode = (
   description,
   tabtrigger,
   snippet,
+  scope,
 ) => {
   // escape " with \"
   // split lines by line-break
@@ -13,17 +14,17 @@ const parseVSCode = (
     .split("\n");
   const separatedSnippetLength = separatedSnippet.length;
 
-  // add double quotes around each line apart from the last one
   const newSnippet = separatedSnippet.map((line, index) => {
     return index === separatedSnippetLength - 1 ? `"${line}"` : `"${line}",`;
   });
-  // prettier-ignore
+  
   return html`
     "${description}": {
       "prefix": "${tabtrigger}",
       "body": [
         ${newSnippet.join('\n')}
       ],
+      "scope": "${scope || ''}",
       "description": "${description}"
     }
   `;

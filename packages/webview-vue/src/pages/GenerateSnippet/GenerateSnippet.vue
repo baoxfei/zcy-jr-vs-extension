@@ -6,24 +6,47 @@
     <div class="form-container">
       <div class="form-left">
         <div class="form-left-header">
-          <el-input
-            size="large"
-            v-model="form.description"
-            placeholder="请输入描述"
-            spellcheck="false"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-          ></el-input>
-          <el-input
-            size="large"
-            v-model="form.tabTrigger"
-            placeholder="请输入触发词"
-            spellcheck="false"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-          ></el-input>
+          <div>
+            <el-input
+              size="large"
+              v-model="form.description"
+              placeholder="请输入描述"
+              spellcheck="false"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+            ></el-input>
+
+            <el-input
+              size="large"
+              v-model="form.tabTrigger"
+              placeholder="请输入触发词"
+              spellcheck="false"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+            ></el-input>
+          </div>
+          <div>
+            <el-input
+              size="large"
+              v-model="form.languages"
+              placeholder="请输入代码片段支持的语言，以逗号分隔"
+              spellcheck="false"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+            ></el-input>
+            <el-input
+              size="large"
+              v-model="form.tag"
+              placeholder="请输入标签，以逗号分隔"
+              spellcheck="false"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+            ></el-input>
+          </div>
         </div>
         <div class="form-left-body">
           <el-input
@@ -42,7 +65,7 @@
       </div>
       <div class="form-right">
         <pre style="color: black;">
-          {{ form.generateSnippet }}
+          {{ generateSnippet }}
         </pre>
         <el-button class="form-button" type="primary" @click="submitForm">提交</el-button>
       </div>
@@ -51,15 +74,17 @@
 </template>
 
 <script setup>
-import { watch, reactive, onMounted, onBeforeMount } from "vue";
+import {  reactive, onBeforeMount, computed } from "vue";
 import parseVSCode from '../../utils/parseVSCode'
 import useCommon from "../../store/common";
 import { useRoute } from "vue-router";
+import { message } from "ant-design-vue";
 const form = reactive({
   description: "",
   tabTrigger: "",
   snippet: "",
-  generateSnippet: ""
+  languages: "",
+  tags: ""
 });
 const { postMessage } = useCommon();
 
@@ -68,26 +93,18 @@ const route = useRoute();
 onBeforeMount(() => {
   try {
     if (!route.query.initialValues) return
-    const { description, trigger, body } = JSON.parse(route.query.initialValues) || {}
-    form.description = description
-    form.tabTrigger = trigger
-    form.snippet = body.join('\n')
-    form.generateSnippet = parseVSCode(description, trigger, body.join('\n'))
-    console.log('初始化参数:', { description, trigger, snippet: body });
-    
+    const { description, trigger, body, languages, tags } = JSON.parse(route.query.initialValues) || {}
+    form.description = description || ""
+    form.tabTrigger = trigger || ""
+    form.snippet = body.join('\n') || ""
+    form.languages = languages || ""
+    form.tags = tags || ""
   } catch (error) {
     console.log('初始化参数错误:', error);
   }
 })
 
-
-watch(() => [form.description, form.tabTrigger, form.snippet], () => {
-  const { description, tabTrigger, snippet} = form;
-  const generateSnippet = parseVSCode(description, tabTrigger, snippet);
-  form.generateSnippet = generateSnippet;
-  console.log('form.value.generateSnippet', generateSnippet);
-  console.log('form.value.snippet', form.snippet);
-});
+const generateSnippet = computed(() => parseVSCode(form.description, form.tabTrigger, form.snippet, form.languages))
 
 const handleKeydown = (e) => {
   if (e.key === "Tab") {
@@ -136,15 +153,17 @@ const handleKeydown = (e) => {
 }
 
 const submitForm = () => {
-  console.log("表单数据:", form.generateSnippet, JSON.stringify(form.generateSnippet));
-  const obj = eval(`({${form.generateSnippet}})`);
-  console.log(obj[form.description], 'object');
+  if (!form.description || !form.snippet) {
+    return message.error('代码描述和代码片段为必填项');
+  }
+  
+  const obj = eval(`({${generateSnippet.value}})`);
   
   postMessage({
     command: 'sendSnippet',
     data: obj[form.description],
     desc: form.description,
-    
+    tags: form.tags,
   })
 };
 </script>
@@ -183,10 +202,12 @@ const submitForm = () => {
 }
 
 .form-left-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 6px;
-  margin-bottom: 6px;
+  >div {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
 }
 
 .form-button {
