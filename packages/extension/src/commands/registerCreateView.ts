@@ -1,6 +1,7 @@
 import   { ExtensionContext, window, commands,  } from 'vscode'
 import { GenerateSnippetWebview } from '../webview'
 import { eventBus } from '../utils'
+import { EventType } from '../utils/eventBus'
 
 
 // 展开webview
@@ -33,16 +34,27 @@ export default function registerCreateView(context: ExtensionContext) {
 
   const generateSnippetWebview = new GenerateSnippetWebview(context)
 
-  eventBus.on('sendMessageToWebview', (message: Object) => {
+  eventBus.on(EventType.sendMessageToWebview, (message: Object, type: 'public' | 'personal') => {
+    
     commands.executeCommand('setContext', 'zcy-jr.snippetView', true)
       .then(() => {
         setTimeout(() => {
           generateSnippetWebview.sendInitConfig()
           generateSnippetWebview.addListener()
-          generateSnippetWebview.sendMessageToWebview(message)
+          generateSnippetWebview.sendMessageToWebview({ ...message, type })
         }, 500)
       })
   })
+
+  // eventBus.on(EventType.GenerateSnippetWebview, (message: Record<string, any>) => {
+  //   const { type } = message;
+  //   switch(type) {
+  //     case 'backToWelcome':
+  //       commands.executeCommand('zcy-jr.backToWelcome')
+  //     default:
+  //       break;
+  //   }
+  // })
 
   context.subscriptions.push(
     window.registerWebviewViewProvider(

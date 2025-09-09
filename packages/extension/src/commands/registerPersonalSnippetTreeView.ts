@@ -4,6 +4,8 @@ import { eventBus, getWorkspacePath } from '../utils'
 import { get } from "lodash";
 import path from 'node:path'
 import fs from 'fs-extra'
+import { EventType } from "../utils/eventBus";
+import { SearchType } from '../utils/commonConfig'
 
 function refreshTreeView(personalTreeView: PersonalTreeDataViewProvider) {
   personalTreeView.refresh();
@@ -33,8 +35,15 @@ const deleteSnippet = async (personalTreeView: PersonalTreeDataViewProvider, tre
   }
 }
 
-const searchSnippet = async (personalTreeView: PersonalTreeDataViewProvider) => {
 
+
+const searchSnippet = async (personalTreeView: PersonalTreeDataViewProvider) => {
+  const pickResult = await window.showQuickPick(['key words', 'tags'], {
+    placeHolder: "请选择搜索类型",
+  })
+  
+  console.log(pickResult, 'pickResult');
+  
   const result = await window.showInputBox({
     prompt: '请输入要搜索的片段名称',
     placeHolder: '请输入要搜索的片段名称',
@@ -107,6 +116,16 @@ export default function registerSnippetTreeView(context: ExtensionContext) {
   context.subscriptions.push(
     treeView
   );
+  // @ts-ignore
+  eventBus.on(EventType.PersonalSnippet, (message) => {
+    const { type } = message;
+    switch(type) {
+      case 'refresh':
+        personalTreeData.refresh();
+      default:
+        break;
+    }
+  })
 
   // 将命令绑定在treeItem上
   context.subscriptions.push(
@@ -140,7 +159,7 @@ export default function registerSnippetTreeView(context: ExtensionContext) {
 
   // 代码片段-编辑
   context.subscriptions.push(commands.registerCommand('zcy-jr.editPersonalSnippet', (treeItem: TreeItem) => {
-    eventBus.emit('sendMessageToWebview', get(treeItem, ['args', 1]) || {})
+    eventBus.emit(EventType.sendMessageToWebview, get(treeItem, ['args', 1]) || {}, 'personal')
   }))
 
   // 搜索代码片段
