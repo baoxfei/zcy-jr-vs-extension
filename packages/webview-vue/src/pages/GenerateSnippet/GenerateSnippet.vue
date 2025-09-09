@@ -39,7 +39,7 @@
             ></el-input>
             <el-input
               size="large"
-              v-model="form.tag"
+              v-model="form.tags"
               placeholder="请输入标签，以逗号分隔"
               spellcheck="false"
               autocomplete="off"
@@ -73,38 +73,49 @@
   </div>
 </template>
 
-<script setup>
-import {  reactive, onBeforeMount, computed } from "vue";
+<script setup lang="ts">
+import {  reactive, computed, ref, watch } from "vue";
 import parseVSCode from '../../utils/parseVSCode'
 import useCommon from "../../store/common";
 import { useRoute } from "vue-router";
 import { message } from "ant-design-vue";
+import type { Ref } from 'vue'
 const form = reactive({
   description: "",
   tabTrigger: "",
   snippet: "",
   languages: "",
-  tags: ""
+  tags: "",
 });
+
+
+const snippetType: Ref<'personal' | 'public'> = ref('personal')
+
 const { postMessage } = useCommon();
 
 const route = useRoute();
+const descAlias = ref<string>('')
 
-onBeforeMount(() => {
+watch(() => route.query.initialValues, () => {
   try {
     if (!route.query.initialValues) return
-    const { description, trigger, body, languages, tags } = JSON.parse(route.query.initialValues) || {}
+    const { description, trigger, body, languages, tags, type, descAlias: desc } = JSON.parse(route.query.initialValues as string) || {}
+    
     form.description = description || ""
     form.tabTrigger = trigger || ""
-    form.snippet = body.join('\n') || ""
+    form.snippet = (body || []).join('\n') || ""
     form.languages = languages || ""
     form.tags = tags || ""
+    descAlias.value = desc || "";
+    snippetType.value = type || 'personal';
+    
   } catch (error) {
     console.log('初始化参数错误:', error);
   }
-})
+}, { immediate: true })
 
-const generateSnippet = computed(() => parseVSCode(form.description, form.tabTrigger, form.snippet, form.languages))
+
+const generateSnippet = computed(() => parseVSCode({ ...form }, descAlias.value))
 
 const handleKeydown = (e) => {
   if (e.key === "Tab") {
@@ -162,8 +173,12 @@ const submitForm = () => {
   postMessage({
     command: 'sendSnippet',
     data: obj[form.description],
-    desc: form.description,
+    desc: descAlias.value || form.description,
     tags: form.tags,
+    type: snippetType.value
+  })
+  postMessage({
+    command: 'closeWebview'
   })
 };
 </script>

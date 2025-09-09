@@ -1,10 +1,13 @@
 import { html } from "common-tags";
 
 const parseVSCode = (
+{
   description,
   tabtrigger,
   snippet,
   scope,
+}: any,
+descAlias: string
 ) => {
   // escape " with \"
   // split lines by line-break
@@ -19,7 +22,7 @@ const parseVSCode = (
   });
   
   return html`
-    "${description}": {
+    "${descAlias || description}": {
       "prefix": "${tabtrigger}",
       "body": [
         ${newSnippet.join('\n')}
