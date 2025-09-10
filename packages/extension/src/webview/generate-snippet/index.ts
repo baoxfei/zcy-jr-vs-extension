@@ -1,8 +1,11 @@
-import { WebviewViewProvider, ExtensionContext, CancellationToken, WebviewView, WebviewViewResolveContext, workspace, window, Uri, commands, } from 'vscode'
+import { WebviewViewProvider, ExtensionContext, CancellationToken, WebviewView, WebviewViewResolveContext, workspace, window, Uri, commands, TextDocument } from 'vscode'
 import { getHtmlForWebview } from '../../utils'
 import { pluginName } from '../../utils/getPluginConfig'
 import fs from 'fs-extra'
 import path from 'path'
+import { eventBus, EventType } from '../../utils/eventBus'
+import PersonalTreeDataViewProvider from '../personal-tree-data'
+import PublicTreeDataViewProvider from '../public-tree-data'
 
 class GenerateSnippetWebview implements WebviewViewProvider {
   public webview?: WebviewView['webview']
@@ -68,19 +71,20 @@ class GenerateSnippetWebview implements WebviewViewProvider {
 
     // 本地存储代码片段的位置 1. 全局 2. 工作区 3. 特定语言
     // 将代码保存为 VSCode snippet 文件
-    private async saveSnippetToFile(data: { code: Object, snippetName: string, language: string }) {
-      console.log(this.context.extensionPath, 'this.context.extensionPath');
-      console.log(this.context.globalStorageUri.fsPath, 'this.context.globalStorageUri');
+    private async saveSnippetToFile(data: { code: Object, snippetName: string, tags: string, type: "public" | "personal" }) {
+      // console.log(this.context.extensionPath, 'this.context.extensionPath');
+      // console.log(this.context.globalStorageUri.fsPath, 'this.context.globalStorageUri');
+      const isPublic = data.type === 'public';
       
-      const personalSnippetsPath = path.join(this.context.extensionPath, './snippets/personal.code-snippets');
-      if (fs.existsSync(personalSnippetsPath)) {
-        console.log('存在 personal.code-snippets');
-        const personalSnippets = fs.readJSONSync(personalSnippetsPath)
-        console.log(personalSnippets, 'personalSnippets');
-        personalSnippets[data.snippetName] = data.code
-        fs.writeJSONSync(personalSnippetsPath, personalSnippets, { spaces: 2, EOL: '\n' });
-        window.showInformationMessage(`代码片段已保存到 ${personalSnippetsPath}`);
-        window.showInformationMessage('代码片段已生成')
+      const snippetsPath = path.join(this.context.extensionPath, isPublic ? PublicTreeDataViewProvider.publicSnippetsPath : PersonalTreeDataViewProvider.personalSnippetsPath);
+        if (fs.existsSync(snippetsPath)) {
+        const snippets = fs.readJSONSync(snippetsPath)
+        snippets[data.snippetName] = { ...data.code, tags: data.tags.split(',')  }
+        fs.writeJSONSync(snippetsPath, snippets, { spaces: 2, EOL: '\n' });
+        
+        eventBus.emit(isPublic ? EventType.PublicSnippet : EventType.PersonalSnippet, { type: 'refresh' })
+        
+        window.showInformationMessage(`代码片段已保存`);
       }
       // 1. 获取工作区路径
       // const workspaceFolder = workspace.workspaceFolders?.[0];
@@ -155,7 +159,14 @@ class GenerateSnippetWebview implements WebviewViewProvider {
       this.webview.onDidReceiveMessage((message) => {
         switch (message.command) {
           case 'sendSnippet':
-            this.saveSnippetToFile({ code: message.data, snippetName: message.desc, language: message.language || 'tsx' })
+            const { data, type, desc, tags } = message;
+            console.log(message, 'message');
+            
+            this.saveSnippetToFile({ code: data, snippetName: desc, tags, type })
+            break
+          case 'closeWebview':
+            commands.executeCommand('zcy-jr.backToWelcome')
+            
             break
           default:
             break
