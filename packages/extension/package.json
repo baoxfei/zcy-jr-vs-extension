@@ -3,6 +3,7 @@
   "displayName": "ZcyJr",
   "description": "",
   "version": "0.0.1",
+  "publisher": "baoxfei",
   "engines": {
     "vscode": "^1.97.0"
   },
@@ -70,7 +71,7 @@
         "icon": "$(search)"
       },
       {
-        "command": "zcy-jr.refreshPublicTreeView",
+        "command": "zcy-jr.refreshPublicSnippets",
         "title": "刷新代码片段树视图",
         "icon": "$(refresh)"
       },
@@ -90,16 +91,21 @@
         "icon": "$(cloud-upload)"
       },
       {
-        "command": "zcy-jr.downloadPublicSnippet",
+        "command": "zcy-jr.exportPublicSnippet",
         "title": "导出代码片段",
         "icon": "$(cloud-download)"
+      },
+      {
+        "command": "zcy-jr.editPublicSnippet",
+        "title": "编辑代码片段",
+        "icon": "$(edit)"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
           "id": "zcy-jr",
-          "title": "zcy-jr generate",
+          "title": "ZcyJr",
           "icon": "images/snippets.svg"
         }
       ]
@@ -109,7 +115,8 @@
         {
           "id": "zcy-jr.generateSnippet",
           "name": "welcome",
-          "when": "!zcy-jr.snippetView"
+          "when": "!zcy-jr.snippetView",
+          "visibility": "hidden"
         },
         {
           "id": "zcy-jr.snippetView",
@@ -140,20 +147,31 @@
     "configuration": {
       "title": "ZcyJr",
       "properties": {
-        "ZcyJr.hostname": {
-          "type": "string",
-          "default": "",
-          "description": "第三方代理地址"
-        },
-        "ZcyJr.apiKey": {
-          "type": "string",
-          "default": "",
-          "description": "第三方代理提供的apiKey"
-        },
-        "ZcyJr.model": {
-          "type": "string",
-          "default": "deepSeek",
-          "description": "chatGPT模型（默认：deepSeek）"
+        "ZcyJr.publicSnippetsConfig": {
+          "type": "object",
+          "description": "公共片段仓库配置",
+          "properties": {
+            "gitRepoUrl": {
+              "type": "string",
+              "default": "",
+              "description": "公共代码片段地址"
+            },
+            "authorizationToken": {
+              "type": "string",
+              "default": "",
+              "description": "公共代码片段仓库token"
+            },
+            "gistId": {
+              "type": "string",
+              "default": "",
+              "description": "公共仓库代码片段id"
+            },
+            "gistFileName": {
+              "type": "string",
+              "default": "public.code-snippets",
+              "description": "公共代码片段文件名"
+            }
+          }
         }
       }
     },
@@ -180,7 +198,7 @@
           "when": "view === zcy-jr.personalSnippets"
         },
         {
-          "command": "zcy-jr.refreshPublicTreeView",
+          "command": "zcy-jr.refreshPublicSnippets",
           "group": "navigation",
           "when": "view === zcy-jr.publicSnippets"
         },
@@ -191,6 +209,11 @@
         },
         {
           "command": "zcy-jr.searchPublicSnippet",
+          "group": "navigation",
+          "when": "view === zcy-jr.publicSnippets"
+        },
+        {
+          "command": "zcy-jr.exportPublicSnippet",
           "group": "navigation",
           "when": "view === zcy-jr.publicSnippets"
         }
@@ -208,6 +231,11 @@
         },
         {
           "command": "zcy-jr.deletePublicSnippet",
+          "group": "inline",
+          "when": "view === zcy-jr.publicSnippets && viewItem === publicSnippetItem"
+        },
+        {
+          "command": "zcy-jr.editPublicSnippet",
           "group": "inline",
           "when": "view === zcy-jr.publicSnippets && viewItem === publicSnippetItem"
         }

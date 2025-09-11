@@ -5,6 +5,7 @@
 		"lib": [
 			"ES2022"
 		],
+		"resolveJsonModule": true,
 		"sourceMap": true,
 		"rootDir": "./src",
 		"outDir": "dist",
