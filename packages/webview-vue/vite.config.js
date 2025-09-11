@@ -6,9 +6,12 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { AntDesignXVueResolver } from 'ant-design-x-vue/resolver'
 import { URL, fileURLToPath } from 'node:url'
+
+const isDev = process.env.NODE_ENV === 'development';
+
 // https://vite.dev/config/
 export default defineConfig({
-  base: "./",
+  base: isDev ?  "./" : '/zcy-jr-vs-extension',
   plugins: [
     vue(),
     AutoImport({
