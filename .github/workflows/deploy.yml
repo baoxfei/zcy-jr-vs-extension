@@ -1,0 +1,29 @@
+name: Build And Deploy
+on:
+  push:
+    branches: ['release/web-generate-code']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@latest
+
+      - name: Lock npm version
+        uses: actions/setup-node@latest
+        with:
+          node-version: '20.x'
+
+      - name: Install
+        run: |
+          npm install pnpm -g
+          pnpm install --filter 'webview-vue'
+          pnpm run --filter 'webview-vue' build
+        
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.3
+        with: 
+          BRANCH: release/web-generate-code
+          FOLDER: dist/webview-vue
+          ACCESS_TOKEN: ${{ secrets.GENERATE_TOKEN }}
