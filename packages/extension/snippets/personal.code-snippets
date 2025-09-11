@@ -6,5 +6,18 @@
       "console.log('test')"
     ],
     "description": "exportConst"
+  },
+  "ltest": {
+    "prefix": "ltest",
+    "body": [
+      "console.log('$1')",
+      "",
+      "console.log('$2')"
+    ],
+    "scope": "",
+    "description": "ltest",
+    "tags": [
+      ""
+    ]
   }
 }

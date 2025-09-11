@@ -1,12 +1,12 @@
 {
   "Print to console": {
     "scope": "javascript,typescript,typescriptreact",
-  	"prefix": "log",
-  	"body": [
+    "prefix": "log",
+    "body": [
       "// eslint-disable-next-line no-console",
-      "console.log('$1 :', $1);",
-  	],
-  	"description": "Log output to console"
+      "console.log('$1 :', $1);"
+    ],
+    "description": "Log output to console"
   },
   "ZcyList模版": {
     "scope": "javascript,typescript,typescriptreact",
@@ -43,7 +43,9 @@
   "export default 模板": {
     "scope": "javascript,typescript,typescriptreact",
     "prefix": "export",
-    "body": ["export default "],
+    "body": [
+      "export default "
+    ],
     "description": "export"
   },
   "import React 模板": {
@@ -99,7 +101,9 @@
   "getValueFromEvent": {
     "scope": "javascript,typescript,typescriptreact",
     "prefix": "getValueFromEvent",
-    "body": ["getValueFromEvent: (value) => handleFormChange('$1', value),"],
+    "body": [
+      "getValueFromEvent: (value) => handleFormChange('$1', value),"
+    ],
     "description": "getValueFromEvent"
   },
   "request模版": {
