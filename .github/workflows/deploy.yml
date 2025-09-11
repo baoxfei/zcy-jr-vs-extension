@@ -1,7 +1,7 @@
 name: Build And Deploy
 on:
   push:
-    branches: ['release/web-generate-code']
+    branches: ['main']
 
 jobs:
   build:
