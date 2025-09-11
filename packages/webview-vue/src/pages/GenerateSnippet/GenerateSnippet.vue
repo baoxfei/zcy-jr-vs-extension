@@ -99,12 +99,11 @@ const descAlias = ref<string>('')
 watch(() => route.query.initialValues, () => {
   try {
     if (!route.query.initialValues) return
-    const { description, trigger, body, languages, tags, type, descAlias: desc } = JSON.parse(route.query.initialValues as string) || {}
-    
+    const { description, trigger, body, scope, tags, type, descAlias: desc } = JSON.parse(route.query.initialValues as string) || {}
     form.description = description || ""
     form.tabTrigger = trigger || ""
     form.snippet = (body || []).join('\n') || ""
-    form.languages = languages || ""
+    form.languages = scope || ""
     form.tags = tags || ""
     descAlias.value = desc || "";
     snippetType.value = type || 'personal';
@@ -115,7 +114,12 @@ watch(() => route.query.initialValues, () => {
 }, { immediate: true })
 
 
-const generateSnippet = computed(() => parseVSCode({ ...form }, descAlias.value))
+const generateSnippet = computed(() => parseVSCode({
+  description: form.description,
+  tabtrigger: form.tabTrigger,
+  snippet: form.snippet,
+  scope: form.languages,
+}, descAlias.value))
 
 const handleKeydown = (e) => {
   if (e.key === "Tab") {
@@ -169,14 +173,16 @@ const submitForm = () => {
   }
   
   const obj = eval(`({${generateSnippet.value}})`);
+  // console.log(obj[form.description], descAlias.value || form.description, form.tags, snippetType.value);
   
   postMessage({
     command: 'sendSnippet',
-    data: obj[form.description],
+    data: obj[descAlias.value || form.description],
     desc: descAlias.value || form.description,
     tags: form.tags,
     type: snippetType.value
   })
+
   postMessage({
     command: 'closeWebview'
   })
