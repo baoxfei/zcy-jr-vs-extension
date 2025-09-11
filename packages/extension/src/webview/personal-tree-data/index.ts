@@ -3,9 +3,9 @@ import fs from 'fs-extra'
 import path from 'path'
 
 class PersonalTreeDataViewProvider implements TreeDataProvider<TreeItem> {
-  // onDidChangeTreeData?: EventEmitter<void | TreeItem | TreeItem[] | null | undefined> | undefined;
   static readonly viewId = "zcy-jr.personalSnippets";
-
+  static readonly personalSnippetsPath = "./snippets/personal.code-snippets";
+  
   private path: string;
 
   private _onDidChangeTreeData: EventEmitter<
@@ -14,6 +14,7 @@ class PersonalTreeDataViewProvider implements TreeDataProvider<TreeItem> {
 
   readonly onDidChangeTreeData: Event<TreeItem | undefined | null | void> =
     this._onDidChangeTreeData.event;
+    
   constructor(path: string) {
     this.path = path;
   }
@@ -26,19 +27,22 @@ class PersonalTreeDataViewProvider implements TreeDataProvider<TreeItem> {
       try {
         const snippets = this.readPersonalSnippets();
         const snippetList = Object.keys(snippets).map((item) => {
-          const { description, body, prefix } = snippets[item] || {};
+          const { description, body, prefix, tags, scope } = snippets[item] || {};
           // 通过 可视化 创建的代码片段 原始数据 回传
           const webviewObj = {
             description: description || item,
             body,
             trigger: prefix,
+            descAlias: item || '',
+            tags: tags || '',
+            scope: scope || '',
           }
           return {
             label: item,
             description: snippets[item].description,
             contextValue: 'personalSnippetItem',
             args: [snippets[item].body, webviewObj],
-            tooltip: (snippets[item].body || '').join('\n'),
+            tooltip: snippets[item].body ?.join('\n') || '',
           };
         });
         resolve(snippetList);
@@ -68,7 +72,7 @@ class PersonalTreeDataViewProvider implements TreeDataProvider<TreeItem> {
     fs.writeJSONSync(
       path.join(this.path, "./snippets/personal.code-snippets"),
       object,
-      "utf-8"
+      { spaces: 2, EOL: '\n', encoding: "utf-8" }
     );
     this.refresh();
   }

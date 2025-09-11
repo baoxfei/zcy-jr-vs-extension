@@ -1,11 +1,12 @@
 import { ExtensionContext, SnippetString, TreeItem, commands, window } from "vscode";
 import { PersonalTreeDataViewProvider } from '../webview'
 import { eventBus, getWorkspacePath } from '../utils'
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import path from 'node:path'
 import fs from 'fs-extra'
 import { EventType } from "../utils/eventBus";
 import { SearchType } from '../utils/commonConfig'
+import getCurrentFileInfo from "../utils/getCurrentFileInfo";
 
 function refreshTreeView(personalTreeView: PersonalTreeDataViewProvider) {
   personalTreeView.refresh();
@@ -36,13 +37,11 @@ const deleteSnippet = async (personalTreeView: PersonalTreeDataViewProvider, tre
 }
 
 
-
 const searchSnippet = async (personalTreeView: PersonalTreeDataViewProvider) => {
-  const pickResult = await window.showQuickPick(['key words', 'tags'], {
+  const pickResult = await window.showQuickPick([SearchType.KeyWords, SearchType.Tags], {
     placeHolder: "请选择搜索类型",
   })
   
-  console.log(pickResult, 'pickResult');
   
   const result = await window.showInputBox({
     prompt: '请输入要搜索的片段名称',
@@ -50,10 +49,29 @@ const searchSnippet = async (personalTreeView: PersonalTreeDataViewProvider) => 
   }) as string;
   
   if (!result) return;
+  const { languageId } = getCurrentFileInfo()
+
   const snippetJson = personalTreeView.readPersonalSnippets();
-  const filterSnippet = Object.entries(snippetJson).filter(([key, value]) => {
-    return key.includes(result) || get(value, ['prefix']).includes(result)
-  })
+  let filterSnippet: any[] = Object.entries(snippetJson).filter((_, value) => {
+  const scope = get(value, ['scope']);
+  return !scope || (scope || '').join(',').includes(languageId)
+  });
+  
+  if (pickResult === SearchType.KeyWords) {
+    // 关键字 搜索 key prefix
+    filterSnippet = filterSnippet.filter(([key, value]) => {
+      return key.includes(result) || get(value, ['prefix']).includes(result)
+    })
+  } else if (pickResult === SearchType.Tags) {
+    // 标签
+    filterSnippet = filterSnippet.filter(([_, value]) => {
+      return (get(value, ['tags']) || '').split(',').includes(result)
+    })
+  }
+
+  if (isEmpty(filterSnippet)) {
+    return window.showInformationMessage('搜索结果为空');
+  }
 
   const quickPick = window.createQuickPick();
   quickPick.items = filterSnippet.map(([key, value]) => {
@@ -62,8 +80,9 @@ const searchSnippet = async (personalTreeView: PersonalTreeDataViewProvider) => 
       description: get(value, ['prefix']),
     }
   })
+
   quickPick.onDidChangeSelection(async (selection) => {
-    if (selection[0]) {
+    if (selection[0] && languageId) {
       const { label } = selection[0];
       const snippet = snippetJson[label]
       insertSnippet({ args: [snippet.body] })
@@ -74,7 +93,9 @@ const searchSnippet = async (personalTreeView: PersonalTreeDataViewProvider) => 
   quickPick.onDidHide(() => {
     quickPick.dispose();
   });
+
   quickPick.show();
+
 }
 // 导出片段
 function exportSnippet(personalTreeView: PersonalTreeDataViewProvider) {

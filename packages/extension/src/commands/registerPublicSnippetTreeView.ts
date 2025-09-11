@@ -10,8 +10,10 @@ import { PublicTreeDataViewProvider } from "../webview";
 import { eventBus, getWorkspacePath } from "../utils";
 import path from "path";
 import fs from 'fs-extra'
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { EventType } from "../utils/eventBus";
+import { SearchType } from "../utils/commonConfig";
+import { getCurrentFileInfo } from '../utils/getCurrentFileInfo'
 
 function refreshTreeView(publicTreeView: PublicTreeDataViewProvider) {
   publicTreeView.refresh();
@@ -46,6 +48,68 @@ const deleteSnippet = async (
     window.showInformationMessage("删除失败！");
   }
 };
+async function searchSnippet(publicTreeView: PublicTreeDataViewProvider) {
+
+  const pickResult = await window.showQuickPick([SearchType.KeyWords, SearchType.Tags], {
+    placeHolder: "请选择搜索类型",
+  })
+  
+  const result = await window.showInputBox({
+    prompt: '请输入要搜索的片段名称/标签',
+    placeHolder: '请输入要搜索的片段名称/标签，然后按回车键',
+  }) as string;
+  
+  if (!result) return;
+  const { languageId } = getCurrentFileInfo()
+  const snippetJson = await publicTreeView.readPublicSnippets();
+
+  let filterSnippet: any[] = Object.entries(snippetJson).filter((_, value) => {
+    const scope = get(value, ['scope']);
+    return !scope || (scope || '').join(',').includes(languageId)
+  });
+
+  
+  if (pickResult === SearchType.KeyWords) {
+    // 关键字 搜索 key prefix
+    filterSnippet = filterSnippet.filter(([key, value]) => {
+      return key.includes(result) || get(value, ['prefix']).includes(result)
+    })
+  } else if (pickResult === SearchType.Tags) {
+    // 标签
+    filterSnippet = filterSnippet.filter(([_, value]) => {
+      return (get(value, ['tags']) || '').split(',').some((value: string) => value.includes(result))
+    })
+  }
+  
+  if (isEmpty(filterSnippet)) {
+    return window.showInformationMessage('搜索结果为空');
+  }
+
+  const quickPick = window.createQuickPick();
+
+  quickPick.items = filterSnippet.map(([key, value]) => {
+    return {
+      label: key,
+      description: get(value, ['prefix']),
+    }
+  })
+
+  quickPick.onDidChangeSelection(async (selection) => {
+    if (selection[0] && languageId) {
+      const { label } = selection[0];
+      const snippet = snippetJson[label]
+      insertSnippet({ args: [snippet.body] })
+    }
+    quickPick.hide();
+  });
+
+  quickPick.onDidHide(() => {
+    quickPick.dispose();
+  });
+
+  quickPick.show();
+
+}
 
 const exportSnippet = async (publicTreeView: PublicTreeDataViewProvider) => {
   // 获取个人代码片段
@@ -72,7 +136,6 @@ export default function registerPublicSnippetTreeView(
     treeDataProvider: publicTreeData,
   });
 
-
   // @ts-ignore
   eventBus.on(EventType.PublicSnippet, (message) => {
     const { type } = message;
@@ -96,7 +159,6 @@ export default function registerPublicSnippetTreeView(
       if (e.selection.length > 0) {
         try {
           const node = e.selection[0];
-          console.log("------>选中了", node);
           await commands.executeCommand("zcy-jr.insertPublicSnippet", node);
           await treeView.reveal(node, { select: false });
         } catch (error) {
@@ -145,5 +207,10 @@ export default function registerPublicSnippetTreeView(
   // 代码片段-编辑
   context.subscriptions.push(commands.registerCommand('zcy-jr.editPublicSnippet', (treeItem: TreeItem) => {
     eventBus.emit(EventType.sendMessageToWebview, get(treeItem, ['args', 1]) || {}, 'public')
+  }))
+
+  // 代码片段-搜索
+  context.subscriptions.push(commands.registerCommand('zcy-jr.searchPublicSnippet', () => {
+    searchSnippet(publicTreeData)
   }))
 }

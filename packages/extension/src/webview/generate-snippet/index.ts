@@ -79,7 +79,7 @@ class GenerateSnippetWebview implements WebviewViewProvider {
       const snippetsPath = path.join(this.context.extensionPath, isPublic ? PublicTreeDataViewProvider.publicSnippetsPath : PersonalTreeDataViewProvider.personalSnippetsPath);
         if (fs.existsSync(snippetsPath)) {
         const snippets = fs.readJSONSync(snippetsPath)
-        snippets[data.snippetName] = { ...data.code, tags: data.tags.split(',')  }
+        snippets[data.snippetName] = { ...data.code, tags: data.tags || '' }
         fs.writeJSONSync(snippetsPath, snippets, { spaces: 2, EOL: '\n' });
         
         eventBus.emit(isPublic ? EventType.PublicSnippet : EventType.PersonalSnippet, { type: 'refresh' })
