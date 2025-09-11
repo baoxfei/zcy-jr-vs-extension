@@ -1,42 +1,6 @@
 import axios from "axios";
 import { getConfig } from "./getConfiguration";
 
-
-// export const request = {
-//   get(url: string, params?: any, token?: string) {
-//     if (!token) return Promise.reject(new Error('token is required'))
-//     return gistInstance({
-//       url,
-//       method: 'get',
-//       params,
-//       headers: {
-//         'Authorization': `token ${token}`
-//       }
-//     })
-//   },
-//   post(url: string, data: any, token?: string) {
-//     return gistInstance({
-//       url,
-//       method: 'post',
-//       data,
-//       headers: {
-//         'Authorization': `token ${token}`
-//       }
-//     })
-//   },
-//   patch(url: string, data: any, token?: string) {
-//     return gistInstance({
-//       url,
-//       method: 'patch',
-//       data,
-//       headers: {
-//         'Authorization': `token ${token}`
-//       }
-//     })
-//   },
-// }
-
-
 type HttpMethod = 'get' | 'post' | 'patch'
 
 function requestWithToken(method: HttpMethod, url: string, data?: any, token?: string) {
@@ -47,7 +11,8 @@ function requestWithToken(method: HttpMethod, url: string, data?: any, token?: s
     ...(method === 'get' ? { params: data } : { data }),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Authorization: token ${token}`,
+      "Accept": "application/vnd.github+json",
+      Authorization: `token ${token}`,
     },
     timeout: 10000,
   })
