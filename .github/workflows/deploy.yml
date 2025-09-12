@@ -29,4 +29,4 @@ jobs:
         with: 
           BRANCH: release/web-generate-code
           FOLDER: dist/webview-vue
-          ACCESS_TOKEN: ${{ secrets.GENERATE_TOKEN }}
+          TOKEN: ${{ secrets.GENERATE_TOKEN }}
