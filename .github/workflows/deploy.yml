@@ -15,12 +15,15 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Install
+      - name: Install And Build
         run: |
           npm install pnpm -g
           pnpm install --filter 'webview-vue'
           pnpm run --filter 'webview-vue' build
         
+      - name: Show build output
+        run: ls -R
+
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.3
         with: 
