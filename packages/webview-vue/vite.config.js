@@ -22,7 +22,7 @@ export default defineConfig({
     }),
   ],
   build: {
-    outDir: "../dist/webview-vue",
+    outDir: "../../dist/webview-vue",
     emptyOutDir: true,
   },
   resolve: {
