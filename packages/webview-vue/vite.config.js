@@ -30,6 +30,7 @@ export default defineConfig({
     modulePreload: {
       polyfill: false,
     },
+    polyfillModulePreload: false,
     rollupOptions: {
       output: {
         sanitizeFileName(name) {
