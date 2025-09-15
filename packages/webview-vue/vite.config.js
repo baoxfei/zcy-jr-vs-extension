@@ -8,6 +8,8 @@ import { AntDesignXVueResolver } from 'ant-design-x-vue/resolver'
 import { URL, fileURLToPath } from 'node:url'
 
 const isDev = process.env.NODE_ENV === 'development';
+const INVALID_CHAR_REGEX = /[\u0000-\u001F"#$&*+,:;<=>?[\]^`{|}\u007F]/g;
+const DRIVE_LETTER_REGEX = /^[a-z]:/i;
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -24,6 +26,20 @@ export default defineConfig({
   build: {
     outDir: "../../dist/webview-vue",
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        sanitizeFileName(name) {
+          const match = DRIVE_LETTER_REGEX.exec(name);
+          const driveLetter = match ? match[0] : "";
+          // A `:` is only allowed as part of a windows drive letter (ex: C:\foo)
+          // Otherwise, avoid them because they can refer to NTFS alternate data streams.
+          return (
+            driveLetter +
+            name.slice(driveLetter.length).replace(INVALID_CHAR_REGEX, "")
+          );
+        }
+      }
+    }
   },
   resolve: {
     alias: {
