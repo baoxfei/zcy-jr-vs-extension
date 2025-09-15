@@ -23,9 +23,13 @@ export default defineConfig({
       resolvers: [ElementPlusResolver(), AntDesignXVueResolver()],
     }),
   ],
+  
   build: {
     outDir: "../../dist/webview-vue",
     emptyOutDir: true,
+    modulePreload: {
+      polyfill: false,
+    },
     rollupOptions: {
       output: {
         sanitizeFileName(name) {
