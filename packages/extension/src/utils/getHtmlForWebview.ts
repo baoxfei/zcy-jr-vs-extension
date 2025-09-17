@@ -17,8 +17,8 @@ async function getHtmlForWebview(context: ExtensionContext, webview: Webview) {
         
         resolve(modifyHtml(html, {
           onopentag(name, attribs) {
-            if (name ==='script' && attribs.src) attribs.src = join(URL, attribs.src)
-            if (name === 'link' && attribs.href) attribs.href = join(URL, attribs.href)
+            // if (name ==='script' && attribs.src) attribs.src = join(URL, attribs.src)
+            // if (name === 'link' && attribs.href) attribs.href = join(URL, attribs.href)
             return { name, attribs }
           },
         }))
