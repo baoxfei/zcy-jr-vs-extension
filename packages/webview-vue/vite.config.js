@@ -7,6 +7,8 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 // import { AntDesignXVueResolver } from 'ant-design-x-vue/resolver'
 import { URL, fileURLToPath } from 'node:url'
 // import { visualizer } from 'rollup-plugin-visualizer'
+import importToCDN from 'vite-plugin-cdn-import'
+
 
 const isDev = process.env.NODE_ENV === 'development';
 const INVALID_CHAR_REGEX = /[\u0000-\u001F"#$&*+,:;<=>?[\]^`{|}\u007F]/g;
@@ -18,11 +20,17 @@ export default defineConfig({
   base: isDev ?  "./" : 'https://baoxfei.github.io/zcy-jr-vs-extension',
   plugins: [
     vue(),
+    // viteExternalsPlugin({ vue: 'Vue' }),
     AutoImport({
       resolvers: [ElementPlusResolver()],
     }),
     Components({
       resolvers: [ElementPlusResolver()],
+    }),
+    importToCDN({
+      modules: [
+        { name: 'vue', var: 'Vue', path: 'https://unpkg.com/vue@3.5.13/dist/vue.global.prod.js' },
+      ],
     }),
     // mode === 'analyze' &&
     //   visualizer({
@@ -39,7 +47,6 @@ export default defineConfig({
     modulePreload: false,
     polyfillModulePreload: false,
     rollupOptions: {
-      external: ['vue'],
       output: {
         sanitizeFileName(name) {
           const match = DRIVE_LETTER_REGEX.exec(name);
@@ -51,10 +58,6 @@ export default defineConfig({
             name.slice(driveLetter.length).replace(INVALID_CHAR_REGEX, "")
           );
         },
-        globals: {
-          vue: 'Vue',
-          // 'vue-router': 'VueRouter'
-        }
       }
     }
   },
