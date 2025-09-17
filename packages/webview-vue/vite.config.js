@@ -13,7 +13,7 @@ const DRIVE_LETTER_REGEX = /^[a-z]:/i;
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: isDev ?  "./" : '/zcy-jr-vs-extension',
+  base: isDev ?  "./" : 'https://baoxfei.github.io/zcy-jr-vs-extension',
   plugins: [
     vue(),
     AutoImport({
@@ -27,9 +27,7 @@ export default defineConfig({
   build: {
     outDir: "../../dist/webview-vue",
     emptyOutDir: true,
-    modulePreload: {
-      polyfill: false,
-    },
+    modulePreload: false,
     polyfillModulePreload: false,
     rollupOptions: {
       output: {
