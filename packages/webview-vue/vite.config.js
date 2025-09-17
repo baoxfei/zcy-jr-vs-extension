@@ -4,8 +4,9 @@ import path from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import { AntDesignXVueResolver } from 'ant-design-x-vue/resolver'
+// import { AntDesignXVueResolver } from 'ant-design-x-vue/resolver'
 import { URL, fileURLToPath } from 'node:url'
+// import { visualizer } from 'rollup-plugin-visualizer'
 
 const isDev = process.env.NODE_ENV === 'development';
 const INVALID_CHAR_REGEX = /[\u0000-\u001F"#$&*+,:;<=>?[\]^`{|}\u007F]/g;
@@ -13,6 +14,7 @@ const DRIVE_LETTER_REGEX = /^[a-z]:/i;
 
 // https://vite.dev/config/
 export default defineConfig({
+  // base: isDev ?  "./" : '/zcy-jr-vs-extension',
   base: isDev ?  "./" : 'https://baoxfei.github.io/zcy-jr-vs-extension',
   plugins: [
     vue(),
@@ -20,8 +22,15 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
     Components({
-      resolvers: [ElementPlusResolver(), AntDesignXVueResolver()],
+      resolvers: [ElementPlusResolver()],
     }),
+    // mode === 'analyze' &&
+    //   visualizer({
+    //     open: true,
+    //     gzipSize: true,
+    //     brotliSize: true,
+    //     filename: 'stats.html'
+    //   }),
   ],
   
   build: {
@@ -30,6 +39,7 @@ export default defineConfig({
     modulePreload: false,
     polyfillModulePreload: false,
     rollupOptions: {
+      external: ['vue'],
       output: {
         sanitizeFileName(name) {
           const match = DRIVE_LETTER_REGEX.exec(name);
@@ -40,6 +50,10 @@ export default defineConfig({
             driveLetter +
             name.slice(driveLetter.length).replace(INVALID_CHAR_REGEX, "")
           );
+        },
+        globals: {
+          vue: 'Vue',
+          // 'vue-router': 'VueRouter'
         }
       }
     }

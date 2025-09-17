@@ -1,3 +1,5 @@
+import GenerateSnippet from '@/pages/GenerateSnippet/GenerateSnippet.vue'
+
 const routes = [
   {
     path: '/',
@@ -7,12 +9,13 @@ const routes = [
     path: '/home',
     name: 'home',
     // component: () => import('@/pages/Home/Home.vue'),
-    component: () => import('@/pages/GenerateSnippet/GenerateSnippet.vue')
+    component: GenerateSnippet
   },
   {
     path: '/generateSnippet',
     name: 'generateSnippet',
-    component: () => import('@/pages/GenerateSnippet/GenerateSnippet.vue'),
+    component: GenerateSnippet,
+    // component: () => import('@/pages/GenerateSnippet/GenerateSnippet.vue'),
   },
   // {
   //   path: '/chat',
