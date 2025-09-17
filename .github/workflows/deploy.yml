@@ -21,8 +21,8 @@ jobs:
           pnpm install --filter 'webview-vue'
           pnpm run --filter 'webview-vue' build
         
-      - name: Show build output
-        run: ls -R
+      # - name: Show build output
+      #   run: ls -R
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.3
