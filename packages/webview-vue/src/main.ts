@@ -5,7 +5,7 @@ import router from './routes'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
-
+// 创建全局变量
 window.__APP_CONFIG__ = {
   ENV: typeof acquireVsCodeApi === 'function' ? 'vscode' : 'web',
   RUNNING_IN_VSCODE: typeof acquireVsCodeApi === 'function',

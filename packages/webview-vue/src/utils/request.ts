@@ -6,7 +6,7 @@ const reg = /compatible-mode/
 axiosInstance.interceptors.request.use(
   config => {
     if (reg.test(config.url || '')) {
-      config.headers['Authorization'] = `Bearer sk-4a1e750bcb6741ada389f1585a5a1db3`
+      // config.headers['Authorization'] = `Bearer sk-4a1e750bcb6741ada389f1585a5a1db3`
     }
     return config
   },

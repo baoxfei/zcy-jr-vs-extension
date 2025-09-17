@@ -28,7 +28,6 @@ function initListener() {
         case 'sendMessage':
           // 路由跳转到生成代码界面 同时初始化数据信息
           router.push({ path: '/generateSnippet', query: { initialValues: event.data.data } });
-
         default:
           break;
       }
