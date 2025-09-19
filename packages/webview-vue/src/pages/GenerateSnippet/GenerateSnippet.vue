@@ -78,8 +78,8 @@ import {  reactive, computed, ref, watch } from "vue";
 import parseVSCode from '../../utils/parseVSCode'
 import useCommon from "../../store/common";
 import { useRoute } from "vue-router";
-import { message } from "ant-design-vue";
 import type { Ref } from 'vue'
+import { ElMessage } from "element-plus";
 const form = reactive({
   description: "",
   tabTrigger: "",
@@ -169,11 +169,11 @@ const handleKeydown = (e) => {
 
 const submitForm = () => {
   if (!form.description || !form.snippet) {
-    return message.error('代码描述和代码片段为必填项');
+    // @ts-ignore
+    return ElMessage.error('代码描述和代码片段为必填项');
   }
   
   const obj = eval(`({${generateSnippet.value}})`);
-  // console.log(obj[form.description], descAlias.value || form.description, form.tags, snippetType.value);
   
   postMessage({
     command: 'sendSnippet',

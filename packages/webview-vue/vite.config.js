@@ -7,31 +7,33 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 // import { AntDesignXVueResolver } from 'ant-design-x-vue/resolver'
 import { URL, fileURLToPath } from 'node:url'
 // import { visualizer } from 'rollup-plugin-visualizer'
-import importToCDN from 'vite-plugin-cdn-import'
+// import importToCDN from 'vite-plugin-cdn-import'
 
 
 const isDev = process.env.NODE_ENV === 'development';
 const INVALID_CHAR_REGEX = /[\u0000-\u001F"#$&*+,:;<=>?[\]^`{|}\u007F]/g;
 const DRIVE_LETTER_REGEX = /^[a-z]:/i;
 
-// https://vite.dev/config/
 export default defineConfig({
-  // base: isDev ?  "./" : '/zcy-jr-vs-extension',
-  base: isDev ?  "./" : 'https://baoxfei.github.io/zcy-jr-vs-extension',
+  base: isDev ?  "./" : '/zcy-jr-vs-extension',
+  // base: isDev ?  "./" : 'https://baoxfei.github.io/zcy-jr-vs-extension',
   plugins: [
     vue(),
+    // importToCDN({
+    //   modules: [
+    //     { name: 'vue', var: 'Vue', path: 'https://unpkg.com/vue@3.5.13/dist/vue.global.prod.js' },
+    //   ],
+    // }),
     // viteExternalsPlugin({ vue: 'Vue' }),
     AutoImport({
+      dts: './auto-imports.d.ts',
       resolvers: [ElementPlusResolver()],
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      dts: './components.d.ts',
+      resolvers: [ElementPlusResolver({  importStyle: 'css' })],
     }),
-    importToCDN({
-      modules: [
-        { name: 'vue', var: 'Vue', path: 'https://unpkg.com/vue@3.5.13/dist/vue.global.prod.js' },
-      ],
-    }),
+
     // mode === 'analyze' &&
     //   visualizer({
     //     open: true,
@@ -42,10 +44,9 @@ export default defineConfig({
   ],
   
   build: {
-    outDir: "../../dist/webview-vue",
+    outDir: "../extension/dist/webview-vue",
     emptyOutDir: true,
     modulePreload: false,
-    polyfillModulePreload: false,
     rollupOptions: {
       output: {
         sanitizeFileName(name) {

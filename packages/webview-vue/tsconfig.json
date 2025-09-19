@@ -12,7 +12,7 @@
     "module": "esnext",
     // For nodejs:
     "lib": ["ES2015", "DOM", "DOM.Iterable"],
-    // "types": ["node"],
+    "types": ["element-plus/global",],
     // and npm install -D @types/node
 
     // Other Outputs
@@ -47,6 +47,6 @@
       "@/*": ["src/*"],
     },
   },
-  "include": ["src/**/*", "auto-imports.d.ts", "components.d.ts", "global.d.ts"],
+  "include": ["src/**/*", "global.d.ts", "components.d.ts", "auto-imports.d.ts"],
   "exclude": ["node_modules"]
 }

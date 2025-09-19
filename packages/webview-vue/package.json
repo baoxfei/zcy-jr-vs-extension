@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "analyze": "vite build --mode analyze"
+    "analyze": "vite build --mode analyze",
+    "debug": "vite build --debug"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
