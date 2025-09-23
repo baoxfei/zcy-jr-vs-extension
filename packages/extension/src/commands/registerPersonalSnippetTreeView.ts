@@ -155,7 +155,7 @@ export default function registerSnippetTreeView(context: ExtensionContext) {
         try {
           const node = e.selection[0]
           console.log('------>选中了', node)
-          await commands.executeCommand('zcy-jr.insertPersonalSnippet', node)
+          await commands.executeCommand('zcy-jr-snippet-manager.insertPersonalSnippet', node)
           await treeView.reveal(node, { select: false })
         } catch (error) {
           console.error(error)
@@ -165,36 +165,36 @@ export default function registerSnippetTreeView(context: ExtensionContext) {
   )
   // 代码片段-刷新
   context.subscriptions.push(
-    commands.registerCommand('zcy-jr.refreshPersonalTreeView', () => {
+    commands.registerCommand('zcy-jr-snippet-manager.refreshPersonalTreeView', () => {
       refreshTreeView(personalTreeData)
     })
   )
   // 代码片段-插入进编辑器
   context.subscriptions.push(
-    commands.registerCommand('zcy-jr.insertPersonalSnippet', insertSnippet)
+    commands.registerCommand('zcy-jr-snippet-manager.insertPersonalSnippet', insertSnippet)
   )
   // 代码片段-删除
-  context.subscriptions.push(commands.registerCommand('zcy-jr.deletePersonalSnippet', (treeItem: TreeItem) => {
+  context.subscriptions.push(commands.registerCommand('zcy-jr-snippet-manager.deletePersonalSnippet', (treeItem: TreeItem) => {
     deleteSnippet(personalTreeData, treeItem)
   }))
 
   // 代码片段-编辑
-  context.subscriptions.push(commands.registerCommand('zcy-jr.editPersonalSnippet', (treeItem: TreeItem) => {
+  context.subscriptions.push(commands.registerCommand('zcy-jr-snippet-manager.editPersonalSnippet', (treeItem: TreeItem) => {
     eventBus.emit(EventType.sendMessageToWebview, get(treeItem, ['args', 1]) || {}, 'personal')
   }))
 
   // 搜索代码片段
-  context.subscriptions.push(commands.registerCommand('zcy-jr.searchPersonalSnippet', () => {
+  context.subscriptions.push(commands.registerCommand('zcy-jr-snippet-manager.searchPersonalSnippet', () => {
     searchSnippet(personalTreeData)
   }))
 
   // 导出代码片段
-  context.subscriptions.push(commands.registerCommand('zcy-jr.exportPersonalSnippet', () => {
+  context.subscriptions.push(commands.registerCommand('zcy-jr-snippet-manager.exportPersonalSnippet', () => {
     exportSnippet(personalTreeData)
   }))
 
   // 导入代码片段
-  context.subscriptions.push(commands.registerCommand('zcy-jr.importPersonalSnippet', () => {
+  context.subscriptions.push(commands.registerCommand('zcy-jr-snippet-manager.importPersonalSnippet', () => {
     importSnippet(personalTreeData)
   }))
 

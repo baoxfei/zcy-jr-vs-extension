@@ -1,6 +1,6 @@
 // const pkgJson = require("../package.json"); // 不能使用require 会报错
 
-export const pluginName = 'zcy-jr';
+export const pluginName = 'zcy-jr-snippet-manager';
 // export default {
 //   name: pkgJson.name,
 // };

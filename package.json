@@ -6,10 +6,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "pnpm run --filter 'zcy-jr' watch & pnpm run --filter 'webview-vue' dev",
+    "dev": "pnpm run --filter 'zcy-jr-snippet-manager' watch & pnpm run --filter 'webview-vue' dev",
     "dev:webview-vue": "pnpm run --filter 'webview-vue' dev",
     "build:webview-vue": "pnpm run --filter 'webview-vue' build",
-    "watch": "pnpm run --filter 'zcy-jr' watch"
+    "watch": "pnpm run --filter 'zcy-jr-snippet-manager' watch"
   },
   "engines": {
     "node": ">=18",

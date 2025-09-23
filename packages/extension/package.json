@@ -1,6 +1,6 @@
 {
-  "name": "zcy-jr",
-  "displayName": "ZcyJr",
+  "name": "zcy-jr-snippet-manager",
+  "displayName": "ZcyJrSnippetManager",
   "description": "",
   "version": "0.0.1",
   "publisher": "baoxfei",
@@ -11,92 +11,92 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:zcy-jr",
-    "onView:zcy-jr.personalSnippets",
-    "onView:zcy-jr.publicSnippets"
+    "onView:zcy-jr-snippet-manager",
+    "onView:zcy-jr-snippet-manager.personalSnippets",
+    "onView:zcy-jr-snippet-manager.publicSnippets"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "zcy-jr.openSetting",
+        "command": "zcy-jr-snippet-manager.openSetting",
         "title": "设置",
         "icon": "$(gear)"
       },
       {
-        "command": "zcy-jr.showGenerateSnippet",
+        "command": "zcy-jr-snippet-manager.showGenerateSnippet",
         "title": "打开生成代码片段页"
       },
       {
-        "command": "zcy-jr.generateSnippet",
+        "command": "zcy-jr-snippet-manager.generateSnippet",
         "title": "生成代码片段View"
       },
       {
-        "command": "zcy-jr.closeGenerateSnippet",
+        "command": "zcy-jr-snippet-manager.closeGenerateSnippet",
         "title": "关闭代码片段页"
       },
       {
-        "command": "zcy-jr.backToWelcome",
+        "command": "zcy-jr-snippet-manager.backToWelcome",
         "title": "返回上一页",
         "icon": "$(arrow-left)"
       },
       {
-        "command": "zcy-jr.refreshPersonalTreeView",
+        "command": "zcy-jr-snippet-manager.refreshPersonalTreeView",
         "title": "刷新代码片段树视图",
         "icon": "$(refresh)"
       },
       {
-        "command": "zcy-jr.exportPersonalSnippet",
+        "command": "zcy-jr-snippet-manager.exportPersonalSnippet",
         "title": "导出代码片段",
         "icon": "$(cloud-download)"
       },
       {
-        "command": "zcy-jr.deletePersonalSnippet",
+        "command": "zcy-jr-snippet-manager.deletePersonalSnippet",
         "title": "删除代码片段",
         "icon": "$(trash)"
       },
       {
-        "command": "zcy-jr.editPersonalSnippet",
+        "command": "zcy-jr-snippet-manager.editPersonalSnippet",
         "title": "编辑代码片段",
         "icon": "$(edit)"
       },
       {
-        "command": "zcy-jr.importPersonalSnippet",
+        "command": "zcy-jr-snippet-manager.importPersonalSnippet",
         "title": "导入代码片段",
         "icon": "$(cloud-upload)"
       },
       {
-        "command": "zcy-jr.searchPersonalSnippet",
+        "command": "zcy-jr-snippet-manager.searchPersonalSnippet",
         "title": "搜索代码片段",
         "icon": "$(search)"
       },
       {
-        "command": "zcy-jr.refreshPublicSnippets",
+        "command": "zcy-jr-snippet-manager.refreshPublicSnippets",
         "title": "刷新代码片段树视图",
         "icon": "$(refresh)"
       },
       {
-        "command": "zcy-jr.searchPublicSnippet",
+        "command": "zcy-jr-snippet-manager.searchPublicSnippet",
         "title": "搜索代码片段",
         "icon": "$(search)"
       },
       {
-        "command": "zcy-jr.deletePublicSnippet",
+        "command": "zcy-jr-snippet-manager.deletePublicSnippet",
         "title": "删除代码片段",
         "icon": "$(trash)"
       },
       {
-        "command": "zcy-jr.uploadPublicSnippet",
+        "command": "zcy-jr-snippet-manager.uploadPublicSnippet",
         "title": "同步代码片段",
         "icon": "$(cloud-upload)"
       },
       {
-        "command": "zcy-jr.exportPublicSnippet",
+        "command": "zcy-jr-snippet-manager.exportPublicSnippet",
         "title": "导出代码片段",
         "icon": "$(cloud-download)"
       },
       {
-        "command": "zcy-jr.editPublicSnippet",
+        "command": "zcy-jr-snippet-manager.editPublicSnippet",
         "title": "编辑代码片段",
         "icon": "$(edit)"
       }
@@ -104,44 +104,44 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "zcy-jr",
+          "id": "zcy-jr-snippet-manager",
           "title": "ZcyJr",
           "icon": "images/snippets.svg"
         }
       ]
     },
     "views": {
-      "zcy-jr": [
+      "zcy-jr-snippet-manager": [
         {
-          "id": "zcy-jr.generateSnippet",
+          "id": "zcy-jr-snippet-manager.generateSnippet",
           "name": "welcome",
-          "when": "!zcy-jr.snippetView",
+          "when": "!zcy-jr-snippet-manager.snippetView",
           "visibility": "hidden"
         },
         {
-          "id": "zcy-jr.snippetView",
+          "id": "zcy-jr-snippet-manager.snippetView",
           "name": "snippetView",
           "type": "webview",
-          "when": "zcy-jr.snippetView"
+          "when": "zcy-jr-snippet-manager.snippetView"
         },
         {
-          "id": "zcy-jr.personalSnippets",
+          "id": "zcy-jr-snippet-manager.personalSnippets",
           "name": "personalSnippets",
           "type": "tree",
-          "when": "!zcy-jr.snippetView"
+          "when": "!zcy-jr-snippet-manager.snippetView"
         },
         {
-          "id": "zcy-jr.publicSnippets",
+          "id": "zcy-jr-snippet-manager.publicSnippets",
           "name": "publicSnippets",
           "type": "tree",
-          "when": "!zcy-jr.snippetView"
+          "when": "!zcy-jr-snippet-manager.snippetView"
         }
       ]
     },
     "viewsWelcome": [
       {
-        "view": "zcy-jr.generateSnippet",
-        "contents": "[设置](command:zcy-jr.openSetting)\n[代码片段生成](command:zcy-jr.showGenerateSnippet)"
+        "view": "zcy-jr-snippet-manager.generateSnippet",
+        "contents": "[设置](command:zcy-jr-snippet-manager.openSetting)\n[代码片段生成](command:zcy-jr-snippet-manager.showGenerateSnippet)"
       }
     ],
     "configuration": {
@@ -178,66 +178,66 @@
     "menus": {
       "view/title": [
         {
-          "command": "zcy-jr.backToWelcome",
+          "command": "zcy-jr-snippet-manager.backToWelcome",
           "group": "navigation",
-          "when": "view === zcy-jr.snippetView"
+          "when": "view === zcy-jr-snippet-manager.snippetView"
         },
         {
-          "command": "zcy-jr.refreshPersonalTreeView",
+          "command": "zcy-jr-snippet-manager.refreshPersonalTreeView",
           "group": "navigation",
-          "when": "view === zcy-jr.personalSnippets"
+          "when": "view === zcy-jr-snippet-manager.personalSnippets"
         },
         {
-          "command": "zcy-jr.importPersonalSnippet",
+          "command": "zcy-jr-snippet-manager.importPersonalSnippet",
           "group": "navigation",
-          "when": "view === zcy-jr.personalSnippets"
+          "when": "view === zcy-jr-snippet-manager.personalSnippets"
         },
         {
-          "command": "zcy-jr.searchPersonalSnippet",
+          "command": "zcy-jr-snippet-manager.searchPersonalSnippet",
           "group": "navigation",
-          "when": "view === zcy-jr.personalSnippets"
+          "when": "view === zcy-jr-snippet-manager.personalSnippets"
         },
         {
-          "command": "zcy-jr.refreshPublicSnippets",
+          "command": "zcy-jr-snippet-manager.refreshPublicSnippets",
           "group": "navigation",
-          "when": "view === zcy-jr.publicSnippets"
+          "when": "view === zcy-jr-snippet-manager.publicSnippets"
         },
         {
-          "command": "zcy-jr.uploadPublicSnippet",
+          "command": "zcy-jr-snippet-manager.uploadPublicSnippet",
           "group": "navigation",
-          "when": "view === zcy-jr.publicSnippets"
+          "when": "view === zcy-jr-snippet-manager.publicSnippets"
         },
         {
-          "command": "zcy-jr.searchPublicSnippet",
+          "command": "zcy-jr-snippet-manager.searchPublicSnippet",
           "group": "navigation",
-          "when": "view === zcy-jr.publicSnippets"
+          "when": "view === zcy-jr-snippet-manager.publicSnippets"
         },
         {
-          "command": "zcy-jr.exportPublicSnippet",
+          "command": "zcy-jr-snippet-manager.exportPublicSnippet",
           "group": "navigation",
-          "when": "view === zcy-jr.publicSnippets"
+          "when": "view === zcy-jr-snippet-manager.publicSnippets"
         }
       ],
       "view/item/context": [
         {
-          "command": "zcy-jr.deletePersonalSnippet",
+          "command": "zcy-jr-snippet-manager.deletePersonalSnippet",
           "group": "inline",
-          "when": "view === zcy-jr.personalSnippets && viewItem === personalSnippetItem"
+          "when": "view === zcy-jr-snippet-manager.personalSnippets && viewItem === personalSnippetItem"
         },
         {
-          "command": "zcy-jr.editPersonalSnippet",
+          "command": "zcy-jr-snippet-manager.editPersonalSnippet",
           "group": "inline",
-          "when": "view === zcy-jr.personalSnippets && viewItem === personalSnippetItem"
+          "when": "view === zcy-jr-snippet-manager.personalSnippets && viewItem === personalSnippetItem"
         },
         {
-          "command": "zcy-jr.deletePublicSnippet",
+          "command": "zcy-jr-snippet-manager.deletePublicSnippet",
           "group": "inline",
-          "when": "view === zcy-jr.publicSnippets && viewItem === publicSnippetItem"
+          "when": "view === zcy-jr-snippet-manager.publicSnippets && viewItem === publicSnippetItem"
         },
         {
-          "command": "zcy-jr.editPublicSnippet",
+          "command": "zcy-jr-snippet-manager.editPublicSnippet",
           "group": "inline",
-          "when": "view === zcy-jr.publicSnippets && viewItem === publicSnippetItem"
+          "when": "view === zcy-jr-snippet-manager.publicSnippets && viewItem === publicSnippetItem"
         }
       ]
     },

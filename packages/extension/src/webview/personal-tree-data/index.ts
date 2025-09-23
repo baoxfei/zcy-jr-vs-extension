@@ -3,7 +3,7 @@ import fs from 'fs-extra'
 import path from 'path'
 
 class PersonalTreeDataViewProvider implements TreeDataProvider<TreeItem> {
-  static readonly viewId = "zcy-jr.personalSnippets";
+  static readonly viewId = "zcy-jr-snippet-manager.personalSnippets";
   static readonly personalSnippetsPath = "./snippets/personal.code-snippets";
   
   private path: string;

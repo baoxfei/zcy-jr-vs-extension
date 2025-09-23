@@ -14,7 +14,7 @@ import { get } from "lodash";
 import { getConfig } from "../../utils/getConfiguration";
 
 class PublicTreeDataViewProvider implements TreeDataProvider<TreeItem> {
-  static readonly viewId = "zcy-jr.publicSnippets";
+  static readonly viewId = "zcy-jr-snippet-manager.publicSnippets";
   static readonly publicSnippetsPath = "./snippets/public.code-snippets";
 
   private config: {
@@ -159,7 +159,7 @@ class PublicTreeDataViewProvider implements TreeDataProvider<TreeItem> {
     if (!this.config.authorizationToken) {
       const isOpenSetting = await window.showInformationMessage('请先配置授权token', { modal: true }, '配置授权token', '取消')
       if (isOpenSetting !== '取消') {
-        commands.executeCommand('zcy-jr.openSetting');
+        commands.executeCommand('zcy-jr-snippet-manager.openSetting');
       }
       return
     }

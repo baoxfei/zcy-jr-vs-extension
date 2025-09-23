@@ -159,7 +159,7 @@ export default function registerPublicSnippetTreeView(
       if (e.selection.length > 0) {
         try {
           const node = e.selection[0];
-          await commands.executeCommand("zcy-jr.insertPublicSnippet", node);
+          await commands.executeCommand("zcy-jr-snippet-manager.insertPublicSnippet", node);
           await treeView.reveal(node, { select: false });
         } catch (error) {
           console.error(error);
@@ -170,20 +170,20 @@ export default function registerPublicSnippetTreeView(
 
   // 更新本地代码片段
   context.subscriptions.push(
-    commands.registerCommand("zcy-jr.refreshPublicSnippets", () => {
+    commands.registerCommand("zcy-jr-snippet-manager.refreshPublicSnippets", () => {
       refreshTreeView(publicTreeData);
     })
   );
 
   // 插入代码片段
   context.subscriptions.push(
-    commands.registerCommand("zcy-jr.insertPublicSnippet", insertSnippet)
+    commands.registerCommand("zcy-jr-snippet-manager.insertPublicSnippet", insertSnippet)
   );
 
   // 删除代码片段
   context.subscriptions.push(
     commands.registerCommand(
-      "zcy-jr.deletePublicSnippet",
+      "zcy-jr-snippet-manager.deletePublicSnippet",
       (treeItem: TreeItem) => {
         deleteSnippet(publicTreeData, treeItem);
       }
@@ -192,25 +192,25 @@ export default function registerPublicSnippetTreeView(
 
   // 更新远端代码片段
   context.subscriptions.push(
-    commands.registerCommand("zcy-jr.uploadPublicSnippet", () => {
+    commands.registerCommand("zcy-jr-snippet-manager.uploadPublicSnippet", () => {
       uploadSnippet(publicTreeData);
     })
   );
 
   // 导出代码片段
   context.subscriptions.push(
-    commands.registerCommand("zcy-jr.exportPublicSnippet", () => {
+    commands.registerCommand("zcy-jr-snippet-manager.exportPublicSnippet", () => {
       exportSnippet(publicTreeData);
     })
   );
 
   // 代码片段-编辑
-  context.subscriptions.push(commands.registerCommand('zcy-jr.editPublicSnippet', (treeItem: TreeItem) => {
+  context.subscriptions.push(commands.registerCommand('zcy-jr-snippet-manager.editPublicSnippet', (treeItem: TreeItem) => {
     eventBus.emit(EventType.sendMessageToWebview, get(treeItem, ['args', 1]) || {}, 'public')
   }))
 
   // 代码片段-搜索
-  context.subscriptions.push(commands.registerCommand('zcy-jr.searchPublicSnippet', () => {
+  context.subscriptions.push(commands.registerCommand('zcy-jr-snippet-manager.searchPublicSnippet', () => {
     searchSnippet(publicTreeData)
   }))
 }

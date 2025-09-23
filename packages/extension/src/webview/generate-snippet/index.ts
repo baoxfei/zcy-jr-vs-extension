@@ -9,7 +9,7 @@ import PublicTreeDataViewProvider from '../public-tree-data'
 
 class GenerateSnippetWebview implements WebviewViewProvider {
   public webview?: WebviewView['webview']
-  static viewId = 'zcy-jr.snippetView'
+  static viewId = 'zcy-jr-snippet-manager.snippetView'
   constructor(private context: ExtensionContext) {
     this.context = context
   }
@@ -165,7 +165,7 @@ class GenerateSnippetWebview implements WebviewViewProvider {
             this.saveSnippetToFile({ code: data, snippetName: desc, tags, type })
             break
           case 'closeWebview':
-            commands.executeCommand('zcy-jr.backToWelcome')
+            commands.executeCommand('zcy-jr-snippet-manager.backToWelcome')
             
             break
           default:

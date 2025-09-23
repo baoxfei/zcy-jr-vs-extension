@@ -6,7 +6,7 @@ import { EventType } from '../utils/eventBus'
 
 // 展开webview
 const showGenerateSnippet = (generateSnippetWebview: GenerateSnippetWebview) => {
-  commands.executeCommand('setContext', 'zcy-jr.snippetView', true)
+  commands.executeCommand('setContext', 'zcy-jr-snippet-manager.snippetView', true)
     .then(() => {
       setTimeout(() => {
         generateSnippetWebview.sendInitConfig()
@@ -17,14 +17,14 @@ const showGenerateSnippet = (generateSnippetWebview: GenerateSnippetWebview) => 
 
 // 关闭webview
 const closeGenerateSnippet = (generateSnippetWebview: GenerateSnippetWebview) => {
-  commands.executeCommand('setContext', 'zcy-jr.snippetView', false)
+  commands.executeCommand('setContext', 'zcy-jr-snippet-manager.snippetView', false)
   .then(() => {
     generateSnippetWebview.removeWebviewView()
   })
 }
 
 const backToWelcome = (generateSnippetWebview: GenerateSnippetWebview) => {
-  commands.executeCommand('setContext', 'zcy-jr.snippetView', false)
+  commands.executeCommand('setContext', 'zcy-jr-snippet-manager.snippetView', false)
   .then(() => {
     generateSnippetWebview.removeWebviewView()
   })
@@ -36,7 +36,7 @@ export default function registerCreateView(context: ExtensionContext) {
 
   eventBus.on(EventType.sendMessageToWebview, (message: Object, type: 'public' | 'personal') => {
     
-    commands.executeCommand('setContext', 'zcy-jr.snippetView', true)
+    commands.executeCommand('setContext', 'zcy-jr-snippet-manager.snippetView', true)
       .then(() => {
         setTimeout(() => {
           generateSnippetWebview.sendInitConfig()
@@ -50,7 +50,7 @@ export default function registerCreateView(context: ExtensionContext) {
   //   const { type } = message;
   //   switch(type) {
   //     case 'backToWelcome':
-  //       commands.executeCommand('zcy-jr.backToWelcome')
+  //       commands.executeCommand('zcy-jr-snippet-manager.backToWelcome')
   //     default:
   //       break;
   //   }
@@ -69,19 +69,19 @@ export default function registerCreateView(context: ExtensionContext) {
   )
 
   context.subscriptions.push(
-    commands.registerCommand('zcy-jr.showGenerateSnippet', () => {
+    commands.registerCommand('zcy-jr-snippet-manager.showGenerateSnippet', () => {
       showGenerateSnippet(generateSnippetWebview)
     })
   )
 
   context.subscriptions.push(
-    commands.registerCommand('zcy-jr.closeGenerateSnippet', () => {
+    commands.registerCommand('zcy-jr-snippet-manager.closeGenerateSnippet', () => {
       closeGenerateSnippet(generateSnippetWebview)
     })
   )
 
   context.subscriptions.push(
-    commands.registerCommand('zcy-jr.backToWelcome', () => {
+    commands.registerCommand('zcy-jr-snippet-manager.backToWelcome', () => {
       backToWelcome(generateSnippetWebview)
     })
   )
