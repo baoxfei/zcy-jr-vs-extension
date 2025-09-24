@@ -10,7 +10,7 @@ import { PublicTreeDataViewProvider } from "../webview";
 import { eventBus, getWorkspacePath } from "../utils";
 import path from "path";
 import fs from 'fs-extra'
-import { get, isEmpty } from "lodash";
+import { get, isEmpty, omit } from "lodash";
 import { EventType } from "../utils/eventBus";
 import { SearchType } from "../utils/commonConfig";
 import { getCurrentFileInfo } from '../utils/getCurrentFileInfo'
@@ -137,11 +137,23 @@ export default function registerPublicSnippetTreeView(
   });
 
   // @ts-ignore
-  eventBus.on(EventType.PublicSnippet, (message) => {
+  eventBus.on(EventType.PublicSnippet, async (message) => {
     const { type } = message;
     switch(type) {
-      case 'refresh':
+      case 'refresh': {
         publicTreeData.refresh();
+      }
+      case 'contribute': {
+        const { descAlias } = message.snippet;
+        const publicSnippets = await publicTreeData.readPublicSnippets()
+        if (publicSnippets[descAlias]) {
+          window.showInformationMessage(`${descAlias} has already existed`);
+        } else {
+          publicSnippets[descAlias] = omit(message.snippet, ['descAlias'])
+          publicTreeData.writePublicSnippets(publicSnippets)
+          window.showInformationMessage(`contribute ${descAlias} success`);
+        }
+      }
       default:
         break;
     }

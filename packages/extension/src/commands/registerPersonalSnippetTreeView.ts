@@ -120,8 +120,17 @@ function importSnippet(personalTreeView: PersonalTreeDataViewProvider) {
       'json': ['json']
     }
   }).then(filePaths => { 
-    console.log(filePaths, 'filePaths');
-    
+    const filePath = filePaths?.[0]?.fsPath;
+    if (filePath) {
+      try {
+        const personalSnippets = personalTreeView.readPersonalSnippets()
+        const importSnippets = fs.readJSONSync(filePath, 'utf-8')
+        personalTreeView.writePersonalSnippets({ ...importSnippets, personalSnippets })
+      } catch (error) {
+        // @ts-ignore
+        console.error(error.toSting())
+      }
+    }
   })
 }
 
@@ -198,4 +207,8 @@ export default function registerSnippetTreeView(context: ExtensionContext) {
     importSnippet(personalTreeData)
   }))
 
+  // 贡献代码片段
+  context.subscriptions.push(commands.registerCommand('zcy-jr-snippet-manager.contributePersonalSnippet', (treeItem: TreeItem) => {
+    eventBus.emit(EventType.PublicSnippet, { type: 'contribute', snippet: get(treeItem, ['args', 1]) })
+  }))
 }

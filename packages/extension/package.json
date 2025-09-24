@@ -99,13 +99,18 @@
         "command": "zcy-jr-snippet-manager.editPublicSnippet",
         "title": "编辑代码片段",
         "icon": "$(edit)"
+      },
+      {
+        "command": "zcy-jr-snippet-manager.contributePersonalSnippet",
+        "title": "贡献代码片段",
+        "icon": "$(star-full)"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
           "id": "zcy-jr-snippet-manager",
-          "title": "ZcyJr",
+          "title": "ZcyJrSnippetManager",
           "icon": "images/snippets.svg"
         }
       ]
@@ -145,9 +150,9 @@
       }
     ],
     "configuration": {
-      "title": "ZcyJr",
+      "title": "ZcyJrSnippetManager",
       "properties": {
-        "ZcyJr.publicSnippetsConfig": {
+        "ZcyJrSnippetManager.publicSnippetsConfig": {
           "type": "object",
           "description": "公共片段仓库配置",
           "properties": {
@@ -216,6 +221,11 @@
           "command": "zcy-jr-snippet-manager.exportPublicSnippet",
           "group": "navigation",
           "when": "view === zcy-jr-snippet-manager.publicSnippets"
+        },
+        {
+          "command": "zcy-jr-snippet-manager.exportPersonalSnippet",
+          "group": "navigation",
+          "when": "view === zcy-jr-snippet-manager.personalSnippets"
         }
       ],
       "view/item/context": [
@@ -226,6 +236,11 @@
         },
         {
           "command": "zcy-jr-snippet-manager.editPersonalSnippet",
+          "group": "inline",
+          "when": "view === zcy-jr-snippet-manager.personalSnippets && viewItem === personalSnippetItem"
+        },
+        {
+          "command": "zcy-jr-snippet-manager.contributePersonalSnippet",
           "group": "inline",
           "when": "view === zcy-jr-snippet-manager.personalSnippets && viewItem === personalSnippetItem"
         },

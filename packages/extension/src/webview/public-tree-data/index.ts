@@ -164,10 +164,11 @@ class PublicTreeDataViewProvider implements TreeDataProvider<TreeItem> {
       return
     }
     const snippets = await this.readPublicSnippets();
-    if (!this.config.snippetsFileName) return;
+    if (!this.config.snippetsFileName) {
+      window.showInformationMessage('gistFileName 不能为空')
+      return;
+    }
     try {
-      console.log(this.getRemotePath(), 'this.getRemotePath()');
-      
       await request.patch(
         this.getRemotePath(),
         {
