@@ -15,7 +15,7 @@ const INVALID_CHAR_REGEX = /[\u0000-\u001F"#$&*+,:;<=>?[\]^`{|}\u007F]/g;
 const DRIVE_LETTER_REGEX = /^[a-z]:/i;
 
 export default defineConfig({
-  base: isDev ?  "./" : '/zcy-jr-vs-extension',
+  base: isDev ?  "./" : '/', // / 打包到 dist/webview-vue下面 /zcy-jr-vs-extension 打包到github pages下
   // base: isDev ?  "./" : 'https://baoxfei.github.io/zcy-jr-vs-extension',
   plugins: [
     vue(),
