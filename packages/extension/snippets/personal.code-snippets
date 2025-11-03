@@ -3,21 +3,20 @@
     "prefix": "expct",
     "body": [
       "export const ${1:one} = {${2:second}}",
+      "",
       "console.log('test')"
     ],
-    "description": "exportConst"
+    "scope": "typescript",
+    "description": "exportConst",
+    "tags": "export"
   },
-  "ltest": {
-    "prefix": "ltest",
+  "css": {
+    "prefix": "cssTrigger",
     "body": [
-      "console.log('$1')",
-      "",
-      "console.log('$2')"
+      "display:gird;"
     ],
-    "scope": "",
-    "description": "ltest",
-    "tags": [
-      ""
-    ]
+    "scope": "scss",
+    "description": "css",
+    "tags": ""
   }
 }

@@ -152,6 +152,11 @@ export default function registerSnippetTreeView(context: ExtensionContext) {
     switch(type) {
       case 'refresh':
         personalTreeData.refresh();
+        break;
+      case 'delete': {
+        deleteSnippet(personalTreeData, message.node)
+        break;
+      }
       default:
         break;
     }

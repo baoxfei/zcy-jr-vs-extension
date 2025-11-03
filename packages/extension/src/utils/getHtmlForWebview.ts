@@ -9,16 +9,16 @@ async function getHtmlForWebview(context: ExtensionContext, webview: Webview) {
     console.log(process.env.NODE_ENV, 'NODE_ENV');
     
     if (process.env.NODE_ENV === 'development') {
-      const URL = 'https://baoxfei.github.io'
-      // const URL = 'http://localhost:5173/'
-      fetch('https://baoxfei.github.io/zcy-jr-vs-extension/#/home', { method: 'GET' })
+      // const URL = 'https://baoxfei.github.io'
+      const URL = 'http://localhost:5173/'
+      fetch('http://localhost:5173/#/home', { method: 'GET' })
       .then((response) => response.text())
       .then((html) => {
         
         resolve(modifyHtml(html, {
           onopentag(name, attribs) {
-            // if (name ==='script' && attribs.src) attribs.src = join(URL, attribs.src)
-            // if (name === 'link' && attribs.href) attribs.href = join(URL, attribs.href)
+            if (name ==='script' && attribs.src) attribs.src = join(URL, attribs.src)
+            if (name === 'link' && attribs.href) attribs.href = join(URL, attribs.href)
             return { name, attribs }
           },
         }))

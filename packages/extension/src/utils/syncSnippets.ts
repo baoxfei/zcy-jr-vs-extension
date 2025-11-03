@@ -52,7 +52,7 @@ export async function syncSnippetsToPlugin() {
 // 关闭插件时将数据 同步到本地做保存
 export async function syncSnippetsToRoot() {
   const extensionPath = getExtensionPath()
-  
+  console.log('syncSnippetsToRoot');
   if (!extensionPath) return;
   const version = pkg.version;
   const userSnippetDir = getUserSnippetDir();
@@ -77,9 +77,9 @@ export async function syncSnippetsToRoot() {
 
   // 没有personal.xxx.json文件 需初始化
   if (!personalIsChange) {
+    console.log('没有personal.xxx.json文件 需初始化');
     fs.copyFile(path.join(extensionPath, PersonalTreeDataViewProvider.personalSnippetsPath), path.join(userSnippetDir, `personal.${version.replaceAll('.', '-')}.json`), (err) => {
       console.log(err);
-      
     })
   }
 

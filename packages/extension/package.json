@@ -1,6 +1,6 @@
 {
   "name": "zcy-jr-snippet-manager",
-  "displayName": "ZcyJrSnippetManager",
+  "displayName": "zcy-jr-snippet-manager",
   "description": "",
   "version": "0.0.1",
   "publisher": "baoxfei",
@@ -268,7 +268,7 @@
   "scripts": {
     "watch": "cross-env NODE_ENV=development webpack --watch",
     "build:webview": "yarn --cwd \"webview-view\"  build",
-    "vscode:prepublish": "npm run package",
+    "vscode:prepublish": "pnpm run package",
     "compile": "webpack",
     "clean:cache": "rm -rf node_modules/.cache && webpack --clear-cache",
     "package": "webpack --mode production --devtool hidden-source-map",
@@ -299,7 +299,6 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "@octokit/core": "^6.1.5",
     "axios": "^1.9.0",
     "cross-env": "^7.0.3",
     "ejs": "^3.1.10",

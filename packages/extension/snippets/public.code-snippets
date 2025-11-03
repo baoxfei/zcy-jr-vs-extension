@@ -157,5 +157,23 @@
       "};"
     ],
     "description": "import request"
+  },
+  "css3": {
+    "description": "css3",
+    "body": [
+      "display: block;"
+    ],
+    "trigger": "testCss",
+    "tags": "",
+    "scope": "css,scss"
+  },
+  "css": {
+    "description": "css",
+    "body": [
+      "display: flex;"
+    ],
+    "trigger": "csstrigger",
+    "tags": "",
+    "scope": "css,scss"
   }
 }

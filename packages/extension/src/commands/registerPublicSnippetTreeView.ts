@@ -114,7 +114,7 @@ async function searchSnippet(publicTreeView: PublicTreeDataViewProvider) {
 const exportSnippet = async (publicTreeView: PublicTreeDataViewProvider) => {
   // 获取个人代码片段
   // 导出到json文件中
-  const publicSnippets = publicTreeView.readPublicSnippets()
+  const publicSnippets = await publicTreeView.readPublicSnippets()
   try {
     const workspacePath = getWorkspacePath()
     if (workspacePath) {
@@ -142,17 +142,24 @@ export default function registerPublicSnippetTreeView(
     switch(type) {
       case 'refresh': {
         publicTreeData.refresh();
+        break;
       }
       case 'contribute': {
         const { descAlias } = message.snippet;
-        const publicSnippets = await publicTreeData.readPublicSnippets()
-        if (publicSnippets[descAlias]) {
-          window.showInformationMessage(`${descAlias} has already existed`);
-        } else {
-          publicSnippets[descAlias] = omit(message.snippet, ['descAlias'])
-          publicTreeData.writePublicSnippets(publicSnippets)
-          window.showInformationMessage(`contribute ${descAlias} success`);
+        try {
+          const publicSnippets = await publicTreeData.readPublicSnippets()
+          if (publicSnippets[descAlias]) {
+            window.showErrorMessage(`${descAlias} has already existed`);
+          } else {
+            publicSnippets[descAlias] = omit(message.snippet, ['descAlias'])
+            publicTreeData.writePublicSnippets(publicSnippets)
+            window.showInformationMessage(`contribute ${descAlias} success`);
+            eventBus.emit(EventType.PersonalSnippet, { type: "delete", node: { label: descAlias } })
+          }
+        } catch (error) {
+          window.showErrorMessage(`contribute ${descAlias} failed`);
         }
+        break;
       }
       default:
         break;
