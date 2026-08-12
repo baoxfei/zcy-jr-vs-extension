@@ -2,7 +2,7 @@
   "name": "zcy-jr-snippet-manager",
   "displayName": "zcy-jr-snippet-manager",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "baoxfei",
   "engines": {
     "vscode": "^1.97.0"

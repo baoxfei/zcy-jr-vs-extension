@@ -158,22 +158,15 @@
     ],
     "description": "import request"
   },
-  "css3": {
-    "description": "css3",
-    "body": [
-      "display: block;"
-    ],
-    "trigger": "testCss",
-    "tags": "",
-    "scope": "css,scss"
-  },
   "css": {
     "description": "css",
     "body": [
-      "display: flex;"
+      "display: flex;",
+      "jusitifyCenter: center;",
+      "alignItems: center;"
     ],
-    "trigger": "csstrigger",
-    "tags": "",
-    "scope": "css,scss"
+    "trigger": "flexCenter",
+    "tags": "flex",
+    "scope": "css,scss,less"
   }
 }

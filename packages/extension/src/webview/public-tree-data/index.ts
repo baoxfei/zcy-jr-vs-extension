@@ -80,7 +80,6 @@ class PublicTreeDataViewProvider implements TreeDataProvider<TreeItem> {
     this._onDidChangeTreeData?.fire();
   }
 
-  dispose() {}
 
   //  async readPublicSnippets(): Promise<Record<string, any>> {
   //     let localSnippets = await fs.readFile(
@@ -211,6 +210,7 @@ class PublicTreeDataViewProvider implements TreeDataProvider<TreeItem> {
    * 更新远程仓库配置
    */
   async updateRepoValue(config: any, isInit: boolean) {
+    
     const { gitRepoUrl: remoteRepoPath, gistId: snippetId, authorizationToken, gistFileName } =
       config;
     if (!remoteRepoPath || !snippetId || !authorizationToken) {
